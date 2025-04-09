@@ -1,0 +1,15 @@
+version: '3'
+services:
+  servidor:
+    build: ./servidor
+    container_name: servidor
+    ports:
+      - "5000:5000"
+
+  cliente:
+    build: ./cliente
+    container_name: cliente
+    depends_on:
+      - servidor
+    stdin_open: true
+    tty: true
