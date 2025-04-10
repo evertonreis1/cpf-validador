@@ -3,8 +3,38 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 def validar_cpf(cpf):
+    # Remove all non-digit characters
     cpf = ''.join(filter(str.isdigit, cpf))
-    return len(cpf) == 11
+    
+    # Check if length is 11 digits
+    if len(cpf) != 11:
+        return False
+    
+    # Check if all digits are the same (invalid CPF)
+    if cpf == cpf[0] * 11:
+        return False
+    
+    # Calculate first verification digit
+    soma = 0
+    for i in range(9):
+        soma += int(cpf[i]) * (10 - i)
+    resto = 11 - (soma % 11)
+    if resto > 9:
+        resto = 0
+    if resto != int(cpf[9]):
+        return False
+    
+    # Calculate second verification digit
+    soma = 0
+    for i in range(10):
+        soma += int(cpf[i]) * (11 - i)
+    resto = 11 - (soma % 11)
+    if resto > 9:
+        resto = 0
+    if resto != int(cpf[10]):
+        return False
+    
+    return True
 
 @app.route('/validar', methods=['POST'])
 def validar():
