@@ -6,6 +6,10 @@ app = Flask(__name__)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
+@app.route('/health')
+def health_check():
+    return '', 200
+
 def validar_cpf(cpf):
     # Remove all non-digit characters
     cpf = ''.join(filter(str.isdigit, cpf))
