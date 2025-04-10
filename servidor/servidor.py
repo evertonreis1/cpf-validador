@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
+import logging
 
 app = Flask(__name__)
+# Disable Flask's default logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 def validar_cpf(cpf):
     # Remove all non-digit characters
